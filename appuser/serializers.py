@@ -7,9 +7,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from appuser.models import AppUser
-from finance import settings
-from school.models import School
-from school.serializer import SchoolSerializer
+from geoleave import settings
 from utils import sendMail
 
 
@@ -53,7 +51,7 @@ class AppUserSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and request.method == 'GET':
             self.fields['roles'] = FetchRoleSerializer(many=True)
-            self.fields['school_id'] = SchoolSerializer()
+            #self.fields['school_id'] = SchoolSerializer()
 
     class Meta:
         model = AppUser
@@ -67,13 +65,13 @@ class AppUserSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        school_id = validated_data.pop('school_id', None)
-        if school_id:
-            school = get_object_or_404(School, id=school_id)
-            print(f"Found School to be {school} and school_id is {school_id}")
-            validated_data['school_id'] = school
-        else:
-            print("School ID not passed")
+        # school_id = validated_data.pop('school_id', None)
+        # if school_id:
+        #     school = get_object_or_404(School, id=school_id)
+        #     print(f"Found School to be {school} and school_id is {school_id}")
+        #     validated_data['school_id'] = school
+        # else:
+        #     print("School ID not passed")
 
         roles_data = validated_data.pop('roles', [])
         roles = FetchRoleSerializer(many=False).to_internal_value(roles_data)
@@ -89,11 +87,11 @@ class AppUserSerializer(serializers.ModelSerializer):
         if not password:
             if settings.DEBUG:
                 password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-                usermessage = f"Dear {name}, thank you for signing up with Finance App. Your password is {password}"
+                usermessage = f"Dear {name}, thank you for signing up with Geoleave App. Your password is {password}"
                 sendMail(sender_email, sender_password, receiver_email, subject, usermessage)
             else:
                 password = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=12))
-                usermessage = f"Dear {name}, thank you for signing up with Finance App. Your password is {password}"
+                usermessage = f"Dear {name}, thank you for signing up with Geoleave App. Your password is {password}"
                 sendMail(sender_email, sender_password, receiver_email, subject, usermessage)
             validated_data['password'] = password
             mypass = password

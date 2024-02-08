@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 from appuser.models import AppUser
 from appuser.serializers import AppUserSerializer, UpdateAppUserSerializer
-from finance import settings
+from geoleave import settings
 from utils import SchoolIdMixin, IsSuperUser, UUID_from_PrimaryKey
 
 

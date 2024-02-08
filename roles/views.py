@@ -18,7 +18,7 @@ class RoleCreateView(SchoolIdMixin, generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            name = serializer.validated_data.get('name')  # Assuming 'name' is a field in RoleSerializer
+            name = serializer.validated_data.get('name')
             is_exists = Group.objects.filter(name=name.upper()).exists()
 
             if not is_exists:
