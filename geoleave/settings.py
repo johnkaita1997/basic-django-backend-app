@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'roles',
+    'currencies'
 ]
 
 
